@@ -1,21 +1,13 @@
 const mongoose = require("mongoose");
+const { webcrypto } = require("node:crypto");
 const initData = require("./data.js");
 const Listing = require("../models/listing.js");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
-
-main()
-.then(() => {
-    console.log("connected to DB");
-})
-.catch((err) => {
-    console.log(err);
-});
-
-async function main() {
-    await mongoose.connect(MONGO_URL);
+if (!globalThis.crypto) {
+    globalThis.crypto = webcrypto;
 }
 
+const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 
 const initDB = async () => {
     await Listing.deleteMany({});
@@ -23,4 +15,16 @@ const initDB = async () => {
     console.log("data was initialized");
 };
 
-initDB();
+const main = async () => {
+    try {
+        await mongoose.connect(MONGO_URL);
+        console.log("connected to DB");
+        await initDB();
+    } catch (err) {
+        console.log(err);
+    } finally {
+        await mongoose.connection.close();
+    }
+};
+
+main();
