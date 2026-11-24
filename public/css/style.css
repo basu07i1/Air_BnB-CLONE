@@ -2,3 +2,21 @@
     background-color: pink;
 
 } */
+
+.navbar {
+    height: 5rem;
+    background-color: whitesmoke;
+}
+
+.border-bottom{
+    border-bottom: 2px solid yellow;
+}
+
+.fa-compass {
+    color: #fe424d;
+    font-size: 2rem;
+}
+
+.nav-link {
+    color: #222222 !important;
+}
